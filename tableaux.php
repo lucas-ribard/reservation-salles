@@ -1,6 +1,6 @@
 <?php
 
-function BT_reserve(){
+function BT_reserve($HeureD,$HeureF,$User_id,$J,$TD){
     ?>
         <form action="" method="post">
             <!-- Le jour et l'heure sont remonté via un formulaire invisible-->
@@ -8,8 +8,8 @@ function BT_reserve(){
             <input name="H_fin" type="hidden" value="<?php echo $HeureF?>">             <!-- Heure Fin -->
             <input name="IDUSER" type="hidden" value="<?php echo $User_id?>">           <!-- ID utiliateur -->
             <input name="jour" type="hidden" value="<?php echo $J?>">
-            <input name="Date" type="hidden" value="<?php echo $date?>">                <!-- Jour de la semaine -->
-            <input type="submit" name="BT_res" value="Reserver">
+            <input name="Date" type="hidden" value="<?php echo $TD?>">                <!-- Jour de la semaine -->
+            <input type="submit" name="BT_res" value="Reserver" id="BT_sub">
         </form>  
 <?php
 }
@@ -28,7 +28,7 @@ function DATA_Requete($mysqli,$R){
         $DATE_Fin=$resultRESERVATION["fin"];
         $Res_id_user=$resultRESERVATION["id_utilisateur"];
 
-        echo $DATE_Debut;
+        
         // ----- sépare les date de réservation en différentes variables Heure et Date --------
         // infos du début
         $DATE_Debut = strtotime($DATE_Debut);
@@ -40,7 +40,7 @@ function DATA_Requete($mysqli,$R){
         $Res_H_fin = date('H:i', $DATE_Fin); //on recup l'heure de fin
         $Res_D_fin = date('d-m-Y', $DATE_Fin); //on recup la date de fin
 
-        echo $Res_H_debut,"h le ",$Res_D_debut;
+        
 
 
 
@@ -57,8 +57,7 @@ function DATA_Requete($mysqli,$R){
         $data_rq_array[7]=$Res_id_user;
         return $data_rq_array;
     }
-    else{
-    }
+   
 }
 
 function RECUP_user($mysqli,$Res_id_user){
@@ -72,7 +71,7 @@ function RECUP_user($mysqli,$Res_id_user){
 
 //   ------- init variables -------
 $Jours=array('Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche');
-$date=date('d-m-Y',strtotime('-1 Monday')); //commence les dates a lundi dernier
+$date=date('d-m-Y',strtotime('Monday')); //commence les dates a lundi dernier
 $dateSave=array(); // init l'array qui contient les dates
 $data_rq_array=array();
 
@@ -87,11 +86,11 @@ $User_id=$result['id'];
 
 
 
-//compte le nombre de requetes
-$request = $mysqli -> query("SELECT COUNT(*) as `total` FROM `reservations` WHERE 1");
+//compte le nombre de reservation
+$request = $mysqli -> query("SELECT MAX(`id`) as `max_id` FROM `reservations` WHERE 1");
 $nbrequetes=mysqli_fetch_assoc($request);
-$nbrequetes= $nbrequetes['total'];
-//echo $nbrequetes;
+$nbrequetes= $nbrequetes['max_id'];
+
 ?>
 
 
@@ -108,9 +107,11 @@ $nbrequetes= $nbrequetes['total'];
                     //lors de la premiere boucle, on n'ajoute pas +1 jours a la date
                     if($i!=0){
                         $date= date('d-m-Y', strtotime("+1 day", strtotime($date)));
+                        array_push($dateSave,$date);  
+                    }else{
                         array_push($dateSave,$date);
-                        
                     }
+
                     
             ?>
                 <td><strong><?php echo $J,"<br>",$date;?></strong></td>
@@ -139,36 +140,49 @@ $nbrequetes= $nbrequetes['total'];
                     echo $HeureD. ' - '. $HeureF; 
                 ?>
             </th>
-            <!-- on ajoute une case par jour sans compter samedis et dimanche-->
+            <!--    on ajoute une case par jour     -->
             <?php
             for($i=0;$i<=6;$i++){       //pour chaque jour de la semaine
                 $J=$Jours[$i];
-                $TD=$dateSave[$i]; //la date correspondant à la case 
+
+                if($i==0){             
+                    $TD=$dateSave[0];
+                     }
+                else{                                           
+                $TD=$dateSave[$i]; 
+                }
                 if($J === "Samedi" or $J === "Dimanche"){       //sauf samedi et dimanche
-                    ?><th style="background-color: red"></th>
+                    ?><th style="background-color:rgb(67, 64, 92);color:white;">Fermé</th>
                     <?php
                 }
                 else{
-                    echo "<th>";
+                    
                     $reservedetect=0;
-                    for($R=0;$R<=$nbrequetes;$R++){
+                    for($R=0;$R<=$nbrequetes;$R++){ //teste pour regarder chaque requetes
                         $data_rq_array=DATA_Requete($mysqli,$R);
 
                         if($data_rq_array[0]>= $HeureD and $data_rq_array[2] <= $HeureF and $TD === $data_rq_array[1] and $TD === $data_rq_array[3]){//  si le jour et la date corresponde a un emplacement reservé  
                             $reservedetect=1;
+                            break;
                         }
   
                     }
                     if($reservedetect==1){
                         $Res_id_user=$data_rq_array[7];
                         $Utilisateur=RECUP_user($mysqli,$Res_id_user);
-                        echo "Réservé par ",$Utilisateur;
+                        ?><th style="background-color:rgb(194, 190, 233)"><?php
+                        echo "<u>Réservé par ",$Utilisateur,"</u><br>";
+                        echo "<i>",$data_rq_array[5],"</i>";
+                        echo "</th>";
+
                                 
                     }      
                     else{
-                        BT_reserve($R);
+                        echo "<th>";
+                        BT_reserve($HeureD,$HeureF,$User_id,$J,$TD);
+                        echo "</th>";
                     }
-                    echo "</th>";
+                    
                    
                 }
             }

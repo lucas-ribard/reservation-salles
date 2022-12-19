@@ -28,10 +28,10 @@
     <br><br>
     <section id="main">
         <div id="Text">
-            <h1> Réservation de salles</h1>
+            <h1> Réservation de salle</h1>
             <p>
-            un site permettant aux utilisateurs de réserver une salle pour un événement ou autre.<br>
-            Le Planning est visible de tous.
+            un site permettant aux utilisateurs de s'inscrire pour réserver une salle pour un évènement ou autre.<br>
+            Le Planning est visible de tous et les évènements sont affiché.
             </p>
         </div>
     </section>

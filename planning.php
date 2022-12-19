@@ -10,18 +10,21 @@ if(!empty($_POST['BT_res'])) {
     $H_fin=$_POST['H_fin'];
     $jour=$_POST['jour'];
     $ID_User=$_POST['IDUSER'];
-    $date=$_POST['Date'];
-    
+    $date=$_POST['Date']; //ai-je besoin de toutes ces var ? probablement pas , mais elle sont la
+
     if(!empty($ID_User)){
-    echo "test : Réservé de ",$H_deb," à ",$H_fin," le ",$jour," ",$date," par ",$_SESSION['login'],$ID_User;
+        echo "test : Réservé de ",$H_deb," à ",$H_fin," le ",$jour," ",$date," par ",$_SESSION['login'],$ID_User;
+        $_SESSION['IDuser']=$ID_User;
+        $_SESSION['Hdeb']=$H_deb;
+        $_SESSION['Date']=$date;
+        header("location:reservation-form.php");
     }
     else{
-        echo "test : Réservé de ",$H_deb," à ",$H_fin," le ",$jour," ",$date," Aucun utilisateur est connecté";
+        //echo "test : Réservé de ",$H_deb," à ",$H_fin," le ",$jour," ",$date," Aucun utilisateur est connecté";
+        header("location:connexion.php");
     }
 }
-else{
-    echo  "";
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +44,7 @@ else{
     <?php include 'Nav/Nav.php' ?>
 
     <section id="main">
+            <h1>Planning de la semaine</h1>
             <!-- tableau -->
             <?php include 'tableaux.php' ?>    
                 
