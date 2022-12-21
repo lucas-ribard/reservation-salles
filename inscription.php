@@ -55,7 +55,7 @@
                 //la requete sql
                 $sql = "INSERT INTO `utilisateurs`(`login`, `password`) VALUES ('$login','$password1')"; //ajoute login password dans db
                 if ($mysqli->query($sql) === TRUE) {//si requete réussit
-                    header('Location:http://localhost/Reservation_salles/connexion.php'); //redirigé vers la page de connexion
+                    header('Location:http://localhost/reservation-salles/connexion.php'); //redirigé vers la page de connexion
                 }
             }
                 

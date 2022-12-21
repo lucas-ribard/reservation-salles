@@ -37,7 +37,7 @@
             $_SESSION['login'] = $username; //enregistre l'utilisateur dans la session
             $_SESSION['password'] = $password; //enregistre le mot de passe dans la session
             
-            header('Location:http://localhost/Reservation_salles/profil.php'); //redirigé vers la page profil.php
+            header('Location:http://localhost/reservation-salles/profil.php'); //redirigé vers la page profil.php
         }
         else{
             $message="<br><error>utilisateur ou mot de passe incorrect</error>";

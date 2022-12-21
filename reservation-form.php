@@ -107,7 +107,7 @@
 
                 $sql = "INSERT INTO `reservations`(`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$NTitre','$Ndesc','$DateFullD','$DateFullF','$ID_user')"; 
                 if ($mysqli->query($sql) === TRUE) {
-                    header('location:http://localhost/Reservation_salles/planning.php'); 
+                    header('location:http://localhost/reservation-salles/planning.php'); 
                 }
             }
 

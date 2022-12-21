@@ -27,7 +27,7 @@
     if(isset($loginSession) AND isset($passwordSession) ){
         
         if($loginSession==="admin" and $passwordSession==="admin"){   //si admin
-            header('Location:http://localhost/Reservation_salles/admin.php'); //redirigé vers la page admin
+            header('Location:http://localhost/reservation-salles/admin.php'); //redirigé vers la page admin
         }
 
         $request = $mysqli -> query("SELECT * FROM `utilisateurs` where `login` = '$loginSession' AND `password` = '$passwordSession'"); // recupere les infos de l'utilisateur
@@ -72,7 +72,7 @@
 
                     //écrit dans la base de donné (emplacement : id ) les valeurs du formulaire
                     $requestChange = $mysqli -> query(" UPDATE `utilisateurs` SET `login`='$login',`password`='$password1' WHERE id = '$id' "); // remplace les nouvelles infos dans la base de donné
-                    header('Location:http://localhost/Reservation_salles/profil.php');
+                    header('Location:http://localhost/reservation-salles/profil.php');
                 }
             }
             else {
@@ -84,7 +84,7 @@
     
     //si l'utilisateur n'est pas connecté
     else{
-        header('Location:http://localhost/Reservation_salles/connexion.php'); //redirigé vers la page connexion.php
+        header('Location:http://localhost/reservation-salles/connexion.php'); //redirigé vers la page connexion.php
     }
         
 ?>

@@ -71,7 +71,7 @@ function RECUP_user($mysqli,$Res_id_user){
 
 //   ------- init variables -------
 $Jours=array('Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche');
-$date=date('d-m-Y',strtotime('Monday')); //commence les dates a lundi dernier
+$date=date('d-m-Y',strtotime('-1 Monday')); //commence les dates a lundi dernier
 $dateSave=array(); // init l'array qui contient les dates
 $data_rq_array=array();
 

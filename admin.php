@@ -62,7 +62,7 @@
 }
 else{
     echo "Vous n'avez pas le droit d'etre ici";
-    header('Location:http://localhost/Reservation_salles/profil.php'); //redirigé vers la page profil.php
+    header('Location:http://localhost/reservation-salles/profil.php'); //redirigé vers la page profil.php
 }
 ?>
 </body>
